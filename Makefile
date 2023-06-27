@@ -11,8 +11,11 @@ tidy:
 build:
 	cd service && go build 
 
-start:
+start-backend:
 	cd service && ./service
+
+start-frontend:
+	cd frontend && pnpm run dev
 
 migrate: export GOOSE_DRIVER=postgres
 migrate: 
