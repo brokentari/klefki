@@ -1,0 +1,21 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    env_file:
+      - docker.env
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    secrets:
+      - db_password
+
+secrets:
+  db_password:
+    file: secrets/db_password.txt
+
+volumes:
+  db_data:
