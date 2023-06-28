@@ -6,20 +6,18 @@
 	 * @enum { String }
 	 */
 	const State = {
-		LOG: 'log',
+		LOGIN: 'login',
 		REGISTER: 'register'
 	};
 
 	/** @type {State}*/
-	let state = State.LOG;
+	let state = State.LOGIN;
 	let email = '';
 	let password = '';
 	let name = '';
 
 	let loginButtonWidth = 'w-3/4';
 	let registerButtonWidth = 'w-1/4';
-	let loginDisplay = LoginIcon;
-	let registerDisplay = RegisterIcon;
 
 	/**
 	 * Handles a login/register event
@@ -27,14 +25,25 @@
 	 * @param e {SubmitEvent} - Form submission
 	 * @listens
 	 */
-	const handleSubmit = (e) => {
-		let action = e.submitter?.id;
-
-		if (action === 'register') {
-			console.log('registering...');
-		} else {
-			console.log('logging in...');
+	const handleSubmit = async () => {
+		if (!email || !password) {
+			return;
 		}
+		let formData = new FormData();
+
+		formData.set('email', email);
+		formData.set('password', password);
+
+		if (state === State.REGISTER) {
+			formData.set('name', name);
+		}
+
+		const response = await fetch('http://localhost:3000/' + state, {
+			method: 'POST',
+			body: formData
+		});
+
+		console.log(response.status);
 	};
 
 	/**
@@ -45,9 +54,12 @@
 	 */
 	const handleStateChange = (new_state) => {
 		if (new_state != state) {
+			name = '';
+			email = '';
+			password = '';
 			switch (new_state) {
-				case State.LOG:
-					state = State.LOG;
+				case State.LOGIN:
+					state = State.LOGIN;
 					loginButtonWidth = 'w-3/4';
 					registerButtonWidth = 'w-1/4';
 					break;
@@ -63,15 +75,9 @@
 </script>
 
 <div class="bg-sky-950 rounded-2xl pb-12 pt-4 pl-6 pr-6">
-	<h3 class="text-center text-white mb-4 font-extrabold">klekfi</h3>
+	<h3 class="text-center text-white mb-2 font-extrabold">klekfi</h3>
 
 	<form on:submit|preventDefault={handleSubmit} autocomplete="off">
-		{#if state === State.REGISTER}
-			<div class="transition-all ease-in mb-4">
-				<label for="name" class="block mb-2 text-sm font-medium text-white">Name</label>
-				<input type="text" id="name" class="input" bind:value={name} required placeholder="name" />
-			</div>
-		{/if}
 		<div class="mb-4">
 			<label for="email" class="block mb-2 text-sm font-medium text-white">Email</label>
 			<input
@@ -95,15 +101,25 @@
 				placeholder="password"
 			/>
 		</div>
+		<div
+			class={state === State.REGISTER
+				? 'transition-opacity duration-500 ease-in h-auto opacity-100 mb-4'
+				: 'h-0 opacity-0'}
+		>
+			{#if state === State.REGISTER}
+				<label for="name" class="block mb-2 text-sm font-medium text-white">Name</label>
+				<input type="text" id="name" class="input" bind:value={name} required placeholder="name" />
+			{/if}
+		</div>
 
-		<div class="flex gap-3">
+		<div class="flex gap-3 z-50">
 			<button
 				id="login"
-				type={state === State.LOG ? 'submit' : 'button'}
-				on:click={() => handleStateChange(State.LOG)}
-				class="button transition-all duration-300 ease-in {loginButtonWidth} truncate"
+				type={state === State.LOGIN ? 'submit' : 'reset'}
+				on:click={() => handleStateChange(State.LOGIN)}
+				class="button transition-all duration-300 ease-out {loginButtonWidth} truncate"
 			>
-				{#if state === State.LOG}
+				{#if state === State.LOGIN}
 					Log In
 				{:else}
 					<LoginIcon />
@@ -112,9 +128,9 @@
 
 			<button
 				id="register"
-				type={state === State.REGISTER ? 'submit' : 'button'}
+				type={state === State.REGISTER ? 'submit' : 'reset'}
 				on:click={() => handleStateChange(State.REGISTER)}
-				class="button transition-all duration-300 ease-in {registerButtonWidth} truncate"
+				class="button transition-all duration-300 ease-out {registerButtonWidth} truncate"
 			>
 				{#if state === State.REGISTER}
 					Register

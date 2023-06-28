@@ -4,12 +4,14 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/brokentari/klefki/service/v2/api/routes"
 	"github.com/brokentari/klefki/service/v2/api/routes/auth"
 	"github.com/brokentari/klefki/service/v2/api/routes/profile"
 	"github.com/brokentari/klefki/service/v2/api/session"
 	"github.com/brokentari/klefki/service/v2/db"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/cors"
 )
 
 func InitRouter(db *db.Database, sess *session.SessionManager) *chi.Mux {
@@ -20,14 +22,23 @@ func InitRouter(db *db.Database, sess *session.SessionManager) *chi.Mux {
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.Timeout(60 * time.Second))
+	r.Use(cors.Handler(cors.Options{
+		AllowedOrigins: []string{"http://*"},
+		AllowedMethods: []string{"GET", "POST"},
+		AllowedHeaders: []string{"Accept, Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders: []string{"Link"},
+		AllowCredentials: false, 
+		MaxAge: 300,
+	}))
 	
 
 	authHandler := auth.AuthHandler{DB: db, Session: sess}
 	profileHandler := profile.ProfileHandler{DB: db, Session: sess}
 
 	r.Group(func(r chi.Router) {
+		r.Get("/health_check", routes.HealthCheckHandler)
 		r.Post("/register", authHandler.RegisterHandler)
-		r.Get("/login", authHandler.LoginHandler)
+		r.Post("/login", authHandler.LoginHandler)
 	})
 
 	r.Group(func(r chi.Router) {

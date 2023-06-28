@@ -53,8 +53,6 @@ func (a AuthHandler) LoginHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Login successful"))
 	}
-
-	w.WriteHeader(http.StatusAccepted)
 }
 
 func generateAuthToken(length int) (string, error) {
