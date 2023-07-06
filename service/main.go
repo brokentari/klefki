@@ -20,7 +20,7 @@ func main() {
 
 	db := db.GetDB()
 	sess := session.GetSession()
-	r := api.InitRouter(db, sess)
+	r := api.InitRouter(http.Dir("../build"), db, sess)
 
 	listenAddr := fmt.Sprintf(":%s", os.Getenv("KLEFKI_PORT"))
 	log.Infoln("server listening on port " + listenAddr)
@@ -30,3 +30,4 @@ func main() {
 
 	http.ListenAndServe(":3000", r)
 }
+

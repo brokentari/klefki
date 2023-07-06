@@ -14,7 +14,7 @@ import (
 	"github.com/go-chi/cors"
 )
 
-func InitRouter(db *db.Database, sess *session.SessionManager) *chi.Mux {
+func InitRouter(root http.FileSystem, db *db.Database, sess *session.SessionManager) *chi.Mux {
 	r := chi.NewRouter()
 
 	r.Use(middleware.RequestID)
@@ -39,16 +39,19 @@ func InitRouter(db *db.Database, sess *session.SessionManager) *chi.Mux {
 		r.Get("/health_check", routes.HealthCheckHandler)
 		r.Post("/register", authHandler.RegisterHandler)
 		r.Post("/login", authHandler.LoginHandler)
+		r.Get("/profile", profileHandler.HandleGetProfile)
+
 	})
 
 	r.Group(func(r chi.Router) {
 		r.Use(KlefkiAuth(db))
-		r.Get("/profile", profileHandler.HandleGetProfile)
 	})
 
-	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("welcome"))
-	})
+	// r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+	// 	w.Write([]byte("welcome"))
+	// })
+
+	// r.Get("/", fileServer(root))
 
 	return r
 }
@@ -66,3 +69,22 @@ func KlefkiAuth(db *db.Database) func(next http.Handler) http.Handler {
 		})
 	}
 }
+
+// func fileServer(root http.FileSystem) http.HandlerFunc   {
+// 	// if strings.Contains(path, "{}*") {
+// 	// 	panic("fileserver does not permit any url parameters")
+// 	// }
+
+// 	// if path != "/" && path[len(path)-1] != '/' {
+// 	// 	r.Get(path, http.RedirectHandler(path+"/", http.StatusMovedPermanently).ServeHTTP)
+// 	// 	path += "/"
+// 	// }
+// 	// path += "*"
+
+// 	return func(w http.ResponseWriter, r *http.Request) {
+// 		rctx := chi.RouteContext(r.Context())
+// 		pathPrefix := strings.TrimSuffix(rctx.RoutePattern(), "/*")
+// 		fs := http.StripPrefix(pathPrefix, http.FileServer(root))
+// 		fs.ServeHTTP(w, r)
+// 	}
+// }

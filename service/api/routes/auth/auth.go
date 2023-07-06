@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"encoding/hex"
+	"encoding/json"
 	"net/http"
 	"net/mail"
 
@@ -49,9 +50,15 @@ func (a AuthHandler) LoginHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			http.Error(w, "Something wrong happened. Oops.", http.StatusInternalServerError)
 		}
+		a.Session.Put(r.Context(), "user_id", userToAuthenticate.ID.String())
+
 		w.Header().Set("Authorization", token)
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("Login successful"))
+		userJson, err := json.Marshal(userToAuthenticate)
+		if err != nil {
+			http.Error(w, "Unable to marshal user object.", http.StatusInternalServerError)
+		}
+		w.Write(userJson)
 	}
 }
 

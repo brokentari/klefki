@@ -2,6 +2,10 @@
 SHELL := /bin/bash
 .PHONY: fmt build
 
+install:
+	cd service && go get
+	cd frontend && pnpm install
+
 fmt:
 	cd service && go fmt ./...
 
@@ -10,9 +14,10 @@ tidy:
 
 build:
 	cd service && go build 
+	cd frontend && pnpm run build
 
 start-backend:
-	cd service && ./service
+	cd service && air
 
 start-frontend:
 	cd frontend && pnpm run dev
@@ -24,3 +29,5 @@ migrate:
 
 sql:
 	cd service && sqlc generate
+
+preview: build start-backend

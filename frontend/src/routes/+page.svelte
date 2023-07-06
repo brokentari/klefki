@@ -1,9 +1,37 @@
 <script>
-	import LoginForm from '../lib/LoginForm.svelte';
+	/**
+	 * @typedef {Object} User
+	 * @property {string} email
+	 * @property {string} id
+	 * @property {string} name
+	 * @property {string} password
+	 * @property {string} salt
+	 *
+	 */
+
+	import Home from '$lib/Home/Home.svelte';
+	import LoginForm from '$lib/Auth/LoginForm.svelte';
+	import { onMount } from 'svelte';
+
+	let loggedIn = false;
+
+	/** @type {User} */
+	let current_user;
+
+	onMount(() => {
+		const storedUser = localStorage.getItem('userId');
+		if (storedUser) {
+			loggedIn = true;
+		}
+	});
 </script>
 
-<div class="grid h-screen place-items-center">
-	<LoginForm />
+<div class="grid gap- h-screen place-items-center">
+	{#if !loggedIn}
+		<LoginForm bind:loggedIn bind:current_user />
+	{:else}
+		<Home bind:current_user />
+	{/if}
 </div>
 
 <style lang="postcss">
