@@ -4,7 +4,7 @@ SHELL := /bin/bash
 
 install:
 	cd service && go get
-	cd frontend && pnpm install
+	pnpm install
 
 fmt:
 	cd service && go fmt ./...
@@ -14,14 +14,14 @@ tidy:
 
 build:
 	cd service && go build 
-	cd frontend && pnpm run build
+	pnpm run build
 
 start-backend:
 	cd service && air
 
 
 start-frontend:
-	cd frontend && pnpm run dev
+	pnpm run dev
 
 migrate: export GOOSE_DRIVER=postgres
 migrate: 
