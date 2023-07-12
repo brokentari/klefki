@@ -6,11 +6,25 @@
 	export let current_user;
 
 	onMount(async () => {
-		console.log(current_user);
+		let storedUser = localStorage.getItem('userId');
+
+		if (storedUser) {
+			let response = await fetch(
+				'http://localhost:3000/profile?' +
+					new URLSearchParams({
+						userId: storedUser
+					})
+			);
+			let responseJson = await response.json();
+
+			current_user = /** @type {import('../../routes/+page.svelte').User}*/ (responseJson);
+		}
 	});
+
+	const handleLogout = () => {
+		localStorage.removeItem('userId')
+
+	}
 </script>
 
 <Navbar bind:current_user />
-
-<style>
-</style>

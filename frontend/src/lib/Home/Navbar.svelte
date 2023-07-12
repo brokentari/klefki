@@ -16,8 +16,15 @@
 				<div class="hidden md:block">
 					<a
 						href="google.com"
+						class="text-gray-300 font-bold hover:bg-gray-700 px-3 py-2 rounded-md text-sm"
+						>{current_user ? current_user.name : 'undefined'}</a
+					>
+				</div>
+				<div class="hidden md:block">
+					<a
+						href="google.com"
 						class="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
-						>{current_user.name}</a
+						>log out</a
 					>
 				</div>
 			</div>

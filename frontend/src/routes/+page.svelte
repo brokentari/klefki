@@ -27,10 +27,10 @@
 </script>
 
 <div class="grid gap- h-screen place-items-center">
-	{#if !loggedIn}
-		<LoginForm bind:loggedIn bind:current_user />
-	{:else}
+	{#if loggedIn}
 		<Home bind:current_user />
+	{:else}
+		<LoginForm bind:loggedIn bind:current_user />
 	{/if}
 </div>
 

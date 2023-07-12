@@ -16,7 +16,7 @@ type ProfileHandler struct {
 }
 
 func (p ProfileHandler) HandleGetProfile(w http.ResponseWriter, r *http.Request) {
-	user_id := p.Session.GetString(r.Context(), "user_id")
+	user_id := r.URL.Query().Get("userId")
 	user_uuid, err := uuid.FromString(user_id)
 	if err != nil {
 		log.Error("failed to create uuid from string: ", err.Error())
