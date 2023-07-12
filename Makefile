@@ -19,6 +19,7 @@ build:
 start-backend:
 	cd service && air
 
+
 start-frontend:
 	cd frontend && pnpm run dev
 
