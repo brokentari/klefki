@@ -8,7 +8,7 @@ import (
 	"github.com/brokentari/klefki/service/v2/db"
 	"github.com/gofrs/uuid/v5"
 	log "github.com/sirupsen/logrus"
-)
+)	
 
 type ProfileHandler struct {
 	DB      *db.Database

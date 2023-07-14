@@ -14,6 +14,7 @@
 	import { onMount } from 'svelte';
 
 	let loggedIn = false;
+	let checkedLoginStatus = false;
 
 	/** @type {User} */
 	let current_user;
@@ -23,13 +24,14 @@
 		if (storedUser) {
 			loggedIn = true;
 		}
+		checkedLoginStatus = true;
 	});
 </script>
 
 <div class="grid gap- h-screen place-items-center">
 	{#if loggedIn}
-		<Home bind:current_user />
-	{:else}
+		<Home bind:current_user bind:loggedIn />
+	{:else if checkedLoginStatus}
 		<LoginForm bind:loggedIn bind:current_user />
 	{/if}
 </div>

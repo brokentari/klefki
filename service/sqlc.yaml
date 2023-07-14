@@ -17,3 +17,9 @@ sql:
               package: "uuid"
               type: "UUID"
               pointer: false
+          - column: "passwords.user_id"
+            go_type:
+              import: "github.com/gofrs/uuid/v5"
+              package: "uuid"
+              type: "UUID"
+              pointer: false

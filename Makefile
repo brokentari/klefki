@@ -28,6 +28,11 @@ migrate:
 	cd service && source .env && \
 	GOOSE_DBSTRING=postgres://$$POSTGRES_USER@$$POSTGRES_HOST:$$POSTGRES_PORT/$$POSTGRES_DB goose -dir db/migrations up
 
+undo-last-migration: export GOOSE_DRIVER=postgres
+undo-last-migration:
+	cd service && source .env && \
+	GOOSE_DBSTRING=postgres://$$POSTGRES_USER@$$POSTGRES_HOST:$$POSTGRES_PORT/$$POSTGRES_DB goose down
+
 sql:
 	cd service && sqlc generate
 

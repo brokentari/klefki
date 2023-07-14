@@ -8,6 +8,15 @@ import (
 	uuid "github.com/gofrs/uuid/v5"
 )
 
+type Password struct {
+	ID       uuid.UUID `json:"id"`
+	UserID   uuid.UUID `json:"user_id"`
+	Username string    `json:"username"`
+	Password string    `json:"password"`
+	Name     string    `json:"name"`
+	Website  string    `json:"website"`
+}
+
 type User struct {
 	ID       uuid.UUID `json:"id"`
 	Name     string    `json:"name"`

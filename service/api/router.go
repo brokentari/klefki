@@ -7,6 +7,7 @@ import (
 	"github.com/brokentari/klefki/service/v2/api/routes"
 	"github.com/brokentari/klefki/service/v2/api/routes/auth"
 	"github.com/brokentari/klefki/service/v2/api/routes/profile"
+	"github.com/brokentari/klefki/service/v2/api/routes/profile/passwords"
 	"github.com/brokentari/klefki/service/v2/api/session"
 	"github.com/brokentari/klefki/service/v2/db"
 	"github.com/go-chi/chi/v5"
@@ -34,12 +35,15 @@ func InitRouter(root http.FileSystem, db *db.Database, sess *session.SessionMana
 
 	authHandler := auth.AuthHandler{DB: db, Session: sess}
 	profileHandler := profile.ProfileHandler{DB: db, Session: sess}
+	passwordHandler := passwords.PasswordHandler{DB: db, Session: sess}
 
 	r.Group(func(r chi.Router) {
 		r.Get("/health_check", routes.HealthCheckHandler)
 		r.Post("/register", authHandler.RegisterHandler)
 		r.Post("/login", authHandler.LoginHandler)
 		r.Get("/profile", profileHandler.HandleGetProfile)
+		r.Post("/password", passwordHandler.HandleAddPassword)
+		r.Get("/password", passwordHandler.HandleGetUserPasswords)
 
 	})
 

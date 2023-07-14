@@ -1,6 +1,16 @@
 <script>
 	/** @type {import('../../routes/+page.svelte').User}*/
 	export let current_user;
+	/** @type boolean*/
+	export let loggedIn;
+
+	const handleLogout = () => {
+		const storedUser = localStorage.getItem('userId');
+		if (storedUser) {
+			localStorage.removeItem('userId');
+			loggedIn = false;
+		}
+	};
 </script>
 
 <nav class="bg-gray-800 fixed w-full top-0 left-0 right-0">
@@ -21,11 +31,13 @@
 					>
 				</div>
 				<div class="hidden md:block">
-					<a
-						href="google.com"
-						class="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
-						>log out</a
-					>
+					<button on:click={handleLogout}>
+						<a
+							href="/"
+							class="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
+							>log out
+						</a>
+					</button>
 				</div>
 			</div>
 		</div>
