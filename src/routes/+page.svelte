@@ -1,14 +1,4 @@
 <script>
-	/**
-	 * @typedef {Object} User
-	 * @property {string} email
-	 * @property {string} id
-	 * @property {string} name
-	 * @property {string} password
-	 * @property {string} salt
-	 *
-	 */
-
 	import Home from '$lib/Home/Home.svelte';
 	import LoginForm from '$lib/Auth/LoginForm.svelte';
 	import { onMount } from 'svelte';
@@ -16,7 +6,7 @@
 	let loggedIn = false;
 	let checkedLoginStatus = false;
 
-	/** @type {User} */
+	/** @type {import('$lib/types').User} */
 	let current_user;
 
 	onMount(() => {

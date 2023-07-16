@@ -94,7 +94,7 @@ func (q *Queries) GetAllPasswords(ctx context.Context) ([]Password, error) {
 
 const getUserPasswords = `-- name: GetUserPasswords :many
 SELECT id, user_id, username, password, name, website FROM passwords
-WHERE user_id = $1 LIMIT 1
+WHERE user_id = $1
 `
 
 func (q *Queries) GetUserPasswords(ctx context.Context, userID uuid.UUID) ([]Password, error) {

@@ -1,5 +1,5 @@
 <script>
-	/** @type {import('../../routes/+page.svelte').User}*/
+	/** @type {import('$lib/types').User}*/
 	export let current_user;
 	/** @type boolean*/
 	export let loggedIn;
