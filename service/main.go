@@ -18,9 +18,9 @@ func main() {
 		log.Errorln("unable to read environment variables")
 	}
 
-	db := db.GetDB()
+	klefiDatabase := db.GetDB()
 	sess := session.GetSession()
-	r := api.InitRouter(http.Dir("../build"), db, sess)
+	r := api.InitRouter(http.Dir("../build"), klefiDatabase, sess)
 
 	listenAddr := fmt.Sprintf(":%s", os.Getenv("KLEFKI_PORT"))
 	log.Infoln("server listening on port " + listenAddr)
@@ -28,6 +28,5 @@ func main() {
 		log.Errorln("failed to initialize api server")
 	}
 
-	http.ListenAndServe(":3000", r)
+	log.Fatal(http.ListenAndServe(":3000", r))
 }
-

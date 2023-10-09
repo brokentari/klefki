@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import Navbar from '../Home/Navbar.svelte';
 	import PasswordDialog from './PasswordDialog.svelte';
+	import NewPasswordDialog from '$lib/Password/NewPasswordDialog.svelte';
 
 	/** @type {import('$lib/types').User}*/
 	export let current_user;
@@ -14,6 +15,8 @@
 	let selected_password;
 	/** @type boolean */
 	let hidden = true;
+	/** @type boolean*/
+	let new_hideen = true;
 
 	onMount(async () => {
 		let storedUser = localStorage.getItem('userId');
